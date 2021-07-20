@@ -1,14 +1,13 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
     "whitespace": [true, "check-module"],
     "no-unused-expression": false,
     "trailing-comma": [
-      true, {
+      true,
+      {
         "singleline": "never",
         "multiline": {
           "objects": "always",
@@ -18,11 +17,7 @@
         }
       }
     ],
-    "quotemark": [
-      true,
-      "single",
-      "jsx-double"
-    ],
+    "quotemark": [true, "single", "jsx-double"],
     "semicolon": [true, "always"]
   },
   "rulesDirectory": []

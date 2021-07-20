@@ -47,11 +47,11 @@ export default class RunningDemo {
   public static runValidation(req, res, next): any {
     // Some samples to try
     const strings = ['Hello', '98052', '101'];
-// Validators to use
+    // Validators to use
     const validators: { [s: string]: StringValidator } = {};
     validators['ZIP code'] = new ZipCodeValidator();
     validators['Letters only'] = new LettersOnlyValidator();
-// Show whether each string passed each validator
+    // Show whether each string passed each validator
     for (const s of strings) {
       // tslint:disable-next-line:forin
       for (const name in validators) {
@@ -64,7 +64,7 @@ export default class RunningDemo {
     point.scale(5);
 
     return res.json({
-      'run_validation': 1,
+      run_validation: 1,
       point,
       static_point: Point.printX(),
     });

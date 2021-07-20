@@ -9,5 +9,4 @@ class LetterOnlyValidator implements StringValidator {
   isAcceptable(s: string): boolean {
     return false;
   }
-
 }

@@ -10,7 +10,10 @@
     "build": "npm-run-all lint tsc",
     "start": "nodemon --watch src -e ts,json --exec \"yarn lint-debug && node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts\"",
     "dev": "nodemon --watch src -e ts,json --exec \"yarn lint && node --inspect=0.0.0.0:9229 -r ts-node/register src/index.ts\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier:base": "prettier --parser typescript --single-quote",
+    "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx,js}\"",
+    "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx,js}\""
   },
   "repository": {
     "type": "git",
@@ -24,12 +27,19 @@
   },
   "homepage": "https://github.com/d10cn2btt/typescript-nodejs#readme",
   "dependencies": {
+    "@types/random-useragent": "^0.3.0",
+    "@types/request-promise": "^4.1.47",
+    "cheerio": "^1.0.0-rc.10",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "image-downloader": "^4.0.2",
     "morgan": "^1.10.0",
+    "prettier": "^2.3.2",
     "puppeteer": "^10.0.0",
     "random-useragent": "^0.5.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "tslint-config-prettier": "^1.18.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

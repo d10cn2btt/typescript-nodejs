@@ -8,14 +8,14 @@ import winston from '../config/winston';
 export async function captureScreen() {
   try {
     // open browser
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({ headless: false });
     // Mở new tab
     const page = await browser.newPage();
-    await page.setViewport({width: 720, height: 720});
+    await page.setViewport({ width: 720, height: 720 });
     // go to page
-    await page.goto('https://www.homes.co.jp/chintai/b-1446290000001/', {timeout: 90000});
+    await page.goto('https://www.homes.co.jp/chintai/b-1446290000001/', { timeout: 90000 });
     // capture screen and save
-    await page.screenshot({path: 'house_detail.png'});
+    await page.screenshot({ path: 'house_detail.png' });
 
     // close browser
     await browser.close();
@@ -35,8 +35,10 @@ export async function crawlListPage() {
     const agent = randomUseragent.getRandom();
     winston.info(agent);
     await page.setUserAgent(agent);
-    await page.setViewport({width: 1280, height: 720});
-    await page.goto('https://www.cbre-propertysearch.jp/industrial/tokyo/?q=東京都&page=1', {timeout: 90000});
+    await page.setViewport({ width: 1280, height: 720 });
+    await page.goto('https://www.cbre-propertysearch.jp/industrial/tokyo/?q=東京都&page=1', {
+      timeout: 90000,
+    });
     const totalPage = await page.evaluate(() => {
       return Number(document.querySelector('#contents > div > div.propertyList > div > div.tools.bottom > div > ul > li:nth-child(6) > a').innerHTML);
     });
@@ -55,12 +57,12 @@ export async function crawlListPage() {
 
 async function getUrlListPage(page, url) {
   winston.info(`Start crawl page ${url}`);
-  await page.goto(url, {timeout: 90000});
+  await page.goto(url, { timeout: 90000 });
 
   const articles = await page.evaluate(() => {
     const titles = document.querySelectorAll('div.itemGroup div.item h2.name a');
     const arTitle = [];
-    titles.forEach(item => {
+    titles.forEach((item) => {
       arTitle.push({
         href: item.getAttribute('href').trim(),
       });
@@ -99,7 +101,7 @@ async function getTitle(link, page, key) {
     const iconTag = document.querySelector('#contents > div > div.columnSection.clearfix > div > div.bodySection > ul.icons > li:nth-child(1) > span > img');
     const iconUrl = iconTag ? iconTag.getAttribute('src') : '';
 
-    return {titlePage, location, imageUrl, iconUrl};
+    return { titlePage, location, imageUrl, iconUrl };
   });
 
   await saveImage(dataPage.imageUrl);
@@ -127,12 +129,14 @@ async function saveImage(link) {
       fs.mkdirSync(folderImages);
     }
 
-    image.image({
-      url: link,
-      dest: `${folderImages}/${fileName}`,
-    }).catch((er) => {
-      return winston.info(er);
-    });
+    image
+      .image({
+        url: link,
+        dest: `${folderImages}/${fileName}`,
+      })
+      .catch((er) => {
+        return winston.info(er);
+      });
   } catch (e) {
     winston.error(`${link} is invalid`);
   }

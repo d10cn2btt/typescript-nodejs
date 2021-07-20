@@ -9,12 +9,12 @@ router.get('/', (req, res, next) => {
   names.forEach((str) => {
     winston.info(str.toUpperCase());
   });
-  const changingString: Coordinate = {x: 1, y: 2};
+  const changingString: Coordinate = { x: 1, y: 2 };
   winston.info(changingString);
 
   const direction = Direction.UP;
   // const direction = 'UP'; // Argument of type '"UP"' is not assignable to parameter of type 'Direction'.
-  const coord = printCoord<Coordinate>({x: 3, y: 7}, direction);
+  const coord = printCoord<Coordinate>({ x: 3, y: 7 }, direction);
 
   // s is of type 'string'
   const s = firstElement(['a', 'b', 'c']);
@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
   const n = firstElement([1, 2, 3]);
   winston.info(`n is ${n}. s is ${s}`);
 
-  res.json({title: 'Express', coord});
+  res.json({ title: 'Express', coord });
 });
 
 const enum Direction {
