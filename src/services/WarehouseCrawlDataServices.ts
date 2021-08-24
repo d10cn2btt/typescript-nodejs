@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import winston from '../config/winston';
 import request_promise from 'request-promise';
 import cheerio from 'cheerio';
-import { URL_PROVINCES, LIST_PROVINCES, LIST_STORES } from '../config/WarehouseCrawlDataConfig';
+import { URL_PROVINCES, LIST_PROVINCES, LIST_WAREHOUSES, DETAILS_WAREHOUSE } from '../config/WarehouseCrawlDataConfig';
 import { normalizeText } from '../utils/string';
 
 async function warehouseCrawlData() {
@@ -69,14 +69,14 @@ async function detailPageWarehouse(url) {
     winston.info('result');
     const symbol = cheerio.load(result);
     const dataWarehouse = [];
-    symbol(LIST_PROVINCES.DOM_ITEM_CITY).each(function () {
+    symbol(LIST_WAREHOUSES.DOM_ITEM_PROVINCES).each(function () {
       const dataPageData = [];
       dataPageData.push({
         key: 'city',
-        value: symbol(this).find(LIST_PROVINCES.DOM_CITY).text(),
+        value: symbol(this).find(LIST_WAREHOUSES.DOM_LIST_PROVINCES).text(),
       });
       symbol(this)
-        .find(LIST_PROVINCES.DOM_OTHER_INFORMATION)
+        .find(LIST_WAREHOUSES.DOM_OTHER_INFORMATION)
         .each(function () {
           dataPageData.push({
             key: symbol(this).find('th').text(),
@@ -102,8 +102,8 @@ async function detailPageProvince() {
     winston.info('result');
     const symbol = cheerio.load(result);
     const dataWarehouse = [];
-    symbol(LIST_PROVINCES.DOM_PROVINCE).each(function (e) {
-      dataWarehouse.push(symbol(this).find(LIST_PROVINCES.DOM_WAREHOUSE).attr('href').substring(1));
+    symbol(LIST_WAREHOUSES.DOM_PROVINCES).each(function (e) {
+      dataWarehouse.push(symbol(this).find(LIST_WAREHOUSES.DOM_WAREHOUSES).attr('href').substring(1));
     });
     winston.info('dataWarehouse');
 
@@ -119,7 +119,7 @@ async function detailPageProvince() {
       const operator = cheerio.load(resultProvince);
       const dataPage = [];
       const dataImage = [];
-      operator(LIST_STORES.DOM_IMAGE).each(function () {
+      operator(DETAILS_WAREHOUSE.DOM_IMAGES).each(function () {
         dataImage.push(operator(this).find('img').attr('data-src'));
       });
       // tslint:disable-next-line: prefer-for-of
@@ -129,7 +129,7 @@ async function detailPageProvince() {
           value: dataImage[t],
         });
       }
-      operator(LIST_STORES.DOM_TABLE).each(function () {
+      operator(DETAILS_WAREHOUSE.DOM_TABLES).each(function () {
         dataPage.push({
           key: normalizeText(operator(this).find('th').text()),
           value: operator(this).find('td').text(),
