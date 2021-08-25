@@ -356,7 +356,7 @@ async function readDataFileIfExists(path) {
 
 async function getCrawlInfo() {
   const pathFileUrlWarehouse = `${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`;
-  let urlWarehouses: any = await readDataFileIfNotExists(pathFileUrlWarehouse);
+  let urlWarehouses: any = await readDataFileIfExists(pathFileUrlWarehouse);
   if (!urlWarehouses) {
     return null;
   }
