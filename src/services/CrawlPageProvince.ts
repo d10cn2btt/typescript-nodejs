@@ -356,7 +356,7 @@ async function readDataFileIfExists(path) {
 
 async function getCrawlInfo() {
   const pathFileUrlWarehouse = `${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`;
-  let urlWarehouses: any = await readDataFileIfNotExists(pathFileUrlWarehouse);
+  let urlWarehouses: any = await readDataFileIfExists(pathFileUrlWarehouse);
   if (!urlWarehouses) {
     return null;
   }
@@ -365,7 +365,7 @@ async function getCrawlInfo() {
   const totalUrl: number = urlWarehouses.length;
   const crawledUrl: number = urlWarehouses.filter((url) => url.status === 1).length;
   const remainUrl: number = totalUrl - crawledUrl;
-  const progress: number = +(crawledUrl * 100 / totalUrl).toFixed(2);
+  const progress: number = +((crawledUrl * 100) / totalUrl).toFixed(2);
 
   return {
     totalUrl,
