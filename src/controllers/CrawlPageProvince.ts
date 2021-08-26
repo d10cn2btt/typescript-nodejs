@@ -70,7 +70,7 @@ export default class CrawlPageProvinceController {
       }
     } catch (err) {
       return res.json({
-        message: 'Has a error, Please check back data file',
+        message: 'Has a error, please check back data file',
       });
     }
   }
@@ -83,7 +83,7 @@ export default class CrawlPageProvinceController {
         statusCrawl = 'OFF';
         await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, statusCrawl);
         return res.json({
-          message: 'create folder success',
+          message: 'Successfully folder create',
         });
       } else {
         return res.json({
