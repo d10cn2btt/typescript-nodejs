@@ -267,6 +267,15 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         const value = data.value;
         customer[key] = value;
       }
+
+      // Format area field
+      if (customer.area) {
+        let finalArea = customer.area;
+        finalArea = finalArea.split(' / ')[1];
+        finalArea = finalArea.substring(0, finalArea.length - 2);
+        customer.area = +finalArea;
+      }
+
       const customerData = {
         name: customer.name,
         fee: customer.fee,
