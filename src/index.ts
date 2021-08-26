@@ -28,6 +28,15 @@ app.use((req, res, next) => {
   // next(createError(404));
 });
 
+// app.get('/test123', (req, res) => res.render('500 error demo by'));
+// app.get('/error', (req, res) => res.render(error()));
+
+app.use((error, req, res, next) => {
+  res.type('text/plain');
+  res.status(500);
+  res.send('error' + error);
+});
+
 // error handler
 app.use((param, req, res, next) => {
   winston.error(param);

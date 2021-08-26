@@ -35,7 +35,6 @@ async function crawlUrlProvinces() {
 
     return urlProvinces;
   } catch (err) {
-    winston.error(1111);
     winston.info(err);
   }
 }
@@ -80,7 +79,6 @@ async function saveUrlProvinces() {
 
     return urlProvinces;
   } catch (error) {
-    winston.error(2222);
     winston.error(error);
   }
 }
@@ -154,7 +152,21 @@ async function crawlDetailWarehouses(statusCrawl, res) {
       const optionsWarehouse = {
         method: 'GET',
         uri: dataUrl.url,
+        resolveWithFullResponse: true,
       };
+
+      request_promise(optionsWarehouse).catch(async (error) => {
+        if (error.statusCode === 500) {
+          winston.info(3);
+          if (optionsWarehouse.uri) {
+            winston.info('url: ' + optionsWarehouse.uri);
+            dataUrl.status = -1;
+          }
+          await writeFile(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`, JSON.stringify(dataUrlWareHouses));
+          await crawlDetailWarehouses(statusCrawl, res);
+        }
+      });
+
       const resultProvince = await request_promise(optionsWarehouse);
       const operator = cheerio.load(resultProvince);
       operator(DETAILS_WAREHOUSE.DOM_IMAGES).each(function () {
