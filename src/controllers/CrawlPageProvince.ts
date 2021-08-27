@@ -87,7 +87,7 @@ export default class CrawlPageProvinceController {
         });
       } else {
         return res.json({
-          message: 'Not create folder',
+          message: 'Has a error,folder already exists, please check back folder',
         });
       }
     } catch (error) {
