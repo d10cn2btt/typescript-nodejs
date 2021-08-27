@@ -126,7 +126,7 @@ async function crawlUrlWareHouses() {
   }
 }
 
-async function crawlDetailWarehouses(statusCrawl, res) {
+async function crawlDetailWarehouses() {
   try {
     winston.info('[Start crawl detail warehouse]');
     await createFileIfNotExists(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_DATA_WAREHOUSE}`);
@@ -152,18 +152,21 @@ async function crawlDetailWarehouses(statusCrawl, res) {
       const optionsWarehouse = {
         method: 'GET',
         uri: dataUrl.url,
+      };
+
+      const statusOptionsWarehouse = {
+        method: 'GET',
+        uri: dataUrl.url,
         resolveWithFullResponse: true,
       };
 
-      request_promise(optionsWarehouse).catch(async (error) => {
-        if (error.statusCode === 500) {
-          winston.info(3);
-          if (optionsWarehouse.uri) {
-            winston.info('url: ' + optionsWarehouse.uri);
+      await request_promise(statusOptionsWarehouse).catch(async (error) => {
+        if (error.statusCode !== 200) {
+          if (statusOptionsWarehouse.uri) {
             dataUrl.status = -1;
           }
           await writeFile(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`, JSON.stringify(dataUrlWareHouses));
-          await crawlDetailWarehouses(statusCrawl, res);
+          await crawlDetailWarehouses();
         }
       });
 
@@ -306,8 +309,7 @@ async function crawlDetailWarehouses(statusCrawl, res) {
     const currentDate = new Date();
     await fsPromises.rename(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}`, `${FOLDER_FILE_DATA}/Warehouse_${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}_${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}`);
     // Check if the file has been crawled or not, if crawled, statusCrawl = 'DONE';
-    statusCrawl = 'DONE';
-    await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, statusCrawl);
+    await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, 'DONE');
     winston.info('[Crawl success data details ware house]');
 
     return [dataWarehouse];
