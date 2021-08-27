@@ -152,26 +152,15 @@ async function crawlDetailWarehouses() {
       const optionsWarehouse = {
         method: 'GET',
         uri: dataUrl.url,
-      };
-
-      const statusOptionsWarehouse = {
-        method: 'GET',
-        uri: dataUrl.url,
+        simple: false,
         resolveWithFullResponse: true,
       };
-
-      await request_promise(statusOptionsWarehouse).catch(async (error) => {
-        if (error.statusCode !== 200) {
-          if (statusOptionsWarehouse.uri) {
-            dataUrl.status = -1;
-          }
-          await writeFile(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`, JSON.stringify(dataUrlWareHouses));
-          await crawlDetailWarehouses();
-        }
-      });
-
       const resultProvince = await request_promise(optionsWarehouse);
-      const operator = cheerio.load(resultProvince);
+      if (resultProvince.statusCode !== 200) {
+        dataUrl.status = -1;
+        continue;
+      }
+      const operator = cheerio.load(resultProvince.body);
       operator(DETAILS_WAREHOUSE.DOM_IMAGES).each(function () {
         const image = operator(this).find('img').attr('data-src');
         if (image) {
