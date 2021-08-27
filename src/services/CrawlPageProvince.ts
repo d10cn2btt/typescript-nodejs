@@ -285,7 +285,7 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         storyBelow: customer.storyBelow ?? null,
         locationFloor: customer.locationFloor ?? null,
         commonFee: customer.commonFee ?? null,
-        equipments: customer.equipments ?? null,
+        equipments: customer.equipments ?? [],
         isAvailable: customer.isAvailable ?? null,
         informationProvider: customer.informationProvider ?? null,
         access: customer.access ?? null,
