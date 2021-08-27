@@ -273,23 +273,24 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         let finalArea = customer.area;
         finalArea = finalArea.split(' / ')[1];
         finalArea = finalArea.substring(0, finalArea.length - 2);
+        finalArea = finalArea.replace(',', '');
         customer.area = +finalArea;
       }
 
       const customerData = {
-        name: customer.name,
-        fee: customer.fee,
-        area: customer.area,
-        storyAbove: customer.storyAbove,
-        storyBelow: customer.storyBelow,
-        locationFloor: customer.locationFloor,
-        commonFee: customer.commonFee,
-        equipments: customer.equipments,
-        isAvailable: customer.isAvailable,
-        informationProvider: customer.informationProvider,
-        access: customer.access,
-        sourcePath: customer.sourcePath,
-        address: customer.address,
+        name: customer.name ?? null,
+        fee: customer.fee ?? null,
+        area: customer.area ?? null,
+        storyAbove: customer.storyAbove ?? null,
+        storyBelow: customer.storyBelow ?? null,
+        locationFloor: customer.locationFloor ?? null,
+        commonFee: customer.commonFee ?? null,
+        equipments: customer.equipments ?? null,
+        isAvailable: customer.isAvailable ?? null,
+        informationProvider: customer.informationProvider ?? null,
+        access: customer.access ?? null,
+        sourcePath: customer.sourcePath ?? null,
+        address: customer.address ?? null,
       };
 
       dataWarehouse.push(customerData);
