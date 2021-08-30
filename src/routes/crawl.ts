@@ -1,14 +1,9 @@
 import express, { Router } from 'express';
-
 import CrawlController from '../controllers/CrawlDemo';
 import WarehouseController from '../controllers/WarehouseCrawlData';
 import CrawlPageProvinceController from '../controllers/CrawlPageProvince';
-// import rateLimit from 'express-rate-limit';
 
 const router = Router();
-// const limiter = rateLimit({
-//   max: 1,
-// });
 
 router.get('/capture-screen', CrawlController.captureScreen);
 router.get('/crawl-list-page', CrawlController.crawlListPage);

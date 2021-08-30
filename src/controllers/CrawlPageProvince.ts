@@ -33,7 +33,7 @@ export default class CrawlPageProvinceController {
         dateTime = await readDataFileIfExists(`${FOLDER_FILE_DATA}/${FILE_TIME}`);
         statusCrawl = 'ON';
         await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, statusCrawl);
-        crawlDetailWarehouses(statusCrawl, res);
+        crawlDetailWarehouses();
 
         return res.json({
           message: `Started crawling`,
@@ -70,7 +70,7 @@ export default class CrawlPageProvinceController {
       }
     } catch (err) {
       return res.json({
-        message: 'Has a error, Please check back data file',
+        message: 'Has a error, please check back data file',
       });
     }
   }
@@ -83,11 +83,11 @@ export default class CrawlPageProvinceController {
         statusCrawl = 'OFF';
         await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, statusCrawl);
         return res.json({
-          message: 'create folder success',
+          message: 'Successfully create folder',
         });
       } else {
         return res.json({
-          message: 'Not create folder',
+          message: 'Has a error, folder already exists, please check back folder',
         });
       }
     } catch (error) {

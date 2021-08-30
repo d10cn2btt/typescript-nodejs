@@ -35,7 +35,6 @@ async function crawlUrlProvinces() {
 
     return urlProvinces;
   } catch (err) {
-    winston.error(1111);
     winston.info(err);
   }
 }
@@ -80,7 +79,6 @@ async function saveUrlProvinces() {
 
     return urlProvinces;
   } catch (error) {
-    winston.error(2222);
     winston.error(error);
   }
 }
@@ -128,7 +126,7 @@ async function crawlUrlWareHouses() {
   }
 }
 
-async function crawlDetailWarehouses(statusCrawl, res) {
+async function crawlDetailWarehouses() {
   try {
     winston.info('[Start crawl detail warehouse]');
     await createFileIfNotExists(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_DATA_WAREHOUSE}`);
@@ -154,9 +152,15 @@ async function crawlDetailWarehouses(statusCrawl, res) {
       const optionsWarehouse = {
         method: 'GET',
         uri: dataUrl.url,
+        simple: false,
+        resolveWithFullResponse: true,
       };
       const resultProvince = await request_promise(optionsWarehouse);
-      const operator = cheerio.load(resultProvince);
+      if (resultProvince.statusCode !== 200) {
+        dataUrl.status = -1;
+        continue;
+      }
+      const operator = cheerio.load(resultProvince.body);
       operator(DETAILS_WAREHOUSE.DOM_IMAGES).each(function () {
         const image = operator(this).find('img').attr('data-src');
         if (image) {
@@ -304,8 +308,7 @@ async function crawlDetailWarehouses(statusCrawl, res) {
     const currentDate = new Date();
     await fsPromises.rename(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}`, `${FOLDER_FILE_DATA}/Warehouse_${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}_${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}`);
     // Check if the file has been crawled or not, if crawled, statusCrawl = 'DONE';
-    statusCrawl = 'DONE';
-    await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, statusCrawl);
+    await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATUS_CRAWL}`, 'DONE');
     winston.info('[Crawl success data details ware house]');
 
     return [dataWarehouse];

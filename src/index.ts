@@ -7,6 +7,7 @@ import path from 'path';
 import indexRouter from './routes/index';
 import runningRouter from './routes/running';
 import crawlRouter from './routes/crawl';
+import testingRouter from './routes/testing';
 
 import winston from './config/winston';
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/running', runningRouter);
 app.use('/crawl', crawlRouter);
+app.use('/testing', testingRouter);
 
 // // catch 404 and forward to error handler
 app.use((req, res, next) => {
