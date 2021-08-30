@@ -28,12 +28,6 @@ app.use((req, res, next) => {
   // next(createError(404));
 });
 
-app.use((error, req, res, next) => {
-  res.type('text/plain');
-  res.status(500);
-  res.send('error' + error);
-});
-
 // error handler
 app.use((param, req, res, next) => {
   winston.error(param);
