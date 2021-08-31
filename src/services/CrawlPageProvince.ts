@@ -2,7 +2,7 @@ import winston from '../config/winston';
 import request_promise from 'request-promise';
 import cheerio from 'cheerio';
 import { URL_HOME_PAGE, URL_PROVINCES, LIST_PROVINCES, LIST_WAREHOUSES, DETAILS_WAREHOUSE } from '../config/WarehouseCrawlDataConfig';
-import { FOLDER_FILE_DATA, FILE_PROVINCES, FILE_URL_PROVINCES, FILE_URL_WAREHOUSE, FILE_DATA_WAREHOUSE, TIMEOUT_BETWEEN_REQUEST, FILE_STATUS_CRAWL, FOLDER_DEBUG, FILE_TIME, STATISTICAL } from '../config/ConstFileJson';
+import { FOLDER_FILE_DATA, FILE_PROVINCES, FILE_URL_PROVINCES, FILE_URL_WAREHOUSE, FILE_DATA_WAREHOUSE, TIMEOUT_BETWEEN_REQUEST, FILE_STATUS_CRAWL, FOLDER_DEBUG, FILE_TIME, FILE_STATISTICAL } from '../config/ConstFileJson';
 import { normalizeText } from '../utils/string';
 import fs from 'fs';
 import fsPromises, { readFile, writeFile, unlink, mkdir } from 'fs/promises';
@@ -297,13 +297,7 @@ async function crawlDetailWarehouses() {
     }
 
     const crawlInfo = await getCrawlInfo();
-    const dataCrawlInfo = {
-      total: crawlInfo.totalUrl,
-      crawled: crawlInfo.crawledUrl,
-      remain: crawlInfo.remainUrl,
-      progress: crawlInfo.progress + '%',
-    };
-    await writeFile(`${FOLDER_FILE_DATA}/${STATISTICAL}`, JSON.stringify(dataCrawlInfo));
+    await writeFile(`${FOLDER_FILE_DATA}/${FILE_STATISTICAL}`, JSON.stringify(crawlInfo));
 
     const currentDate = new Date();
     await fsPromises.rename(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}`, `${FOLDER_FILE_DATA}/Warehouse_${currentDate.getFullYear()}${currentDate.getMonth() + 1}${currentDate.getDate()}_${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}`);

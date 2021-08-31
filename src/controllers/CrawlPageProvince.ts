@@ -1,5 +1,5 @@
 import { crawlDetailWarehouses, removeFolderLogs, readDataFileIfExists, createFolderIfNotExists, getCrawlInfo, getResponseWhileCrawling, createFolderLogs } from '../services/CrawlPageProvince';
-import { FOLDER_FILE_DATA, FILE_STATUS_CRAWL, FILE_URL_WAREHOUSE, FILE_TIME, FILE_PROVINCES, FOLDER_DEBUG, STATISTICAL } from '../config/ConstFileJson';
+import { FOLDER_FILE_DATA, FILE_STATUS_CRAWL, FILE_URL_WAREHOUSE, FILE_TIME, FILE_PROVINCES, FOLDER_DEBUG, FILE_STATISTICAL } from '../config/ConstFileJson';
 import { writeFile } from 'fs/promises';
 import fs from 'fs';
 import moment from 'moment';
@@ -39,14 +39,14 @@ export default class CrawlPageProvinceController {
           start_time: `${dateTime}`,
         });
       } else if (fileStatusCrawl === 'DONE') {
-        let result: any = await readDataFileIfExists(`${FOLDER_FILE_DATA}/${STATISTICAL}`);
+        let result: any = await readDataFileIfExists(`${FOLDER_FILE_DATA}/${FILE_STATISTICAL}`);
         result = JSON.parse(result);
 
         return res.json({
           message: 'Crawling has been completed. Please run the create folder command before continuing to crawl',
           start_time: `${dateTime}`,
-          total: result.total,
-          crawled: result.crawled,
+          total: result.totalUrl,
+          crawled: result.crawledUrl,
           remain: result.remain,
           progress: result.progress,
         });
