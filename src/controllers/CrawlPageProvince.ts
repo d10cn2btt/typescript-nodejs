@@ -48,7 +48,7 @@ export default class CrawlPageProvinceController {
           total: result.totalUrl,
           crawled: result.crawledUrl,
           remain: result.remain,
-          progress: result.progress,
+          progress: result.progress + '%',
         });
       }
     } catch (error) {
