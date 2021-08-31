@@ -172,48 +172,6 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         });
       });
 
-      // fee
-      const fee = {
-        key: '賃料',
-        value: null,
-      };
-      warehouse.push(fee);
-
-      // storyBelow
-      const storyBelow = {
-        key: '地下階数',
-        value: null,
-      };
-      warehouse.push(storyBelow);
-
-      // locationFloor
-      const locationFloor = {
-        key: '所在階',
-        value: null,
-      };
-      warehouse.push(locationFloor);
-
-      // commonFee
-      const commonFee = {
-        key: '共益費',
-        value: null,
-      };
-      warehouse.push(commonFee);
-
-      // isAvailable
-      const isAvailable = {
-        key: '今すぐ契約可能かどうか',
-        value: true,
-      };
-      warehouse.push(isAvailable);
-
-      // informationProvider
-      const informationProvider = {
-        key: '情報提供元',
-        value: null,
-      };
-      warehouse.push(informationProvider);
-
       // sourcePath
       const sourcePath = {
         key: 'ソースパス',
@@ -230,25 +188,6 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         key: '倉庫設備',
         value: warehouseEquipment,
       });
-
-      // WarehouseAccess
-      const warehouseAccess = {
-        nearestStations: {
-          stationName: null,
-          transitMinute: null,
-          walkingMinute: null,
-        },
-        nearestInterchanges: {
-          highwayName: null,
-          interchangeName: null,
-          distanceKm: null,
-        },
-      };
-      warehouse.push({
-        key: '倉庫へのアクセス',
-        value: warehouseAccess,
-      });
-
       dataUrl.status = 1;
 
       // TranslateFromJapaneseToEnglish
@@ -277,23 +216,13 @@ async function crawlDetailWarehouses(statusCrawl, res) {
         customer.area = +finalArea;
       }
 
-      const customerData = {
-        name: customer.name ?? null,
-        fee: customer.fee ?? null,
-        area: customer.area ?? null,
-        storyAbove: customer.storyAbove ?? null,
-        storyBelow: customer.storyBelow ?? null,
-        locationFloor: customer.locationFloor ?? null,
-        commonFee: customer.commonFee ?? null,
-        equipments: customer.equipments ?? [],
-        isAvailable: customer.isAvailable ?? null,
-        informationProvider: customer.informationProvider ?? null,
-        access: customer.access ?? null,
-        sourcePath: customer.sourcePath ?? null,
-        address: customer.address ?? null,
-      };
+      const defaultWarehouseInfo = {};
+      for (const field of TRANSLATE_FROM_JAPANESE_TO_ENGLISH) {
+        defaultWarehouseInfo[field.value] = field.default_value;
+      }
 
-      dataWarehouse.push(customerData);
+      const warehouseInfo = { ...defaultWarehouseInfo, ...customer };
+      dataWarehouse.push(warehouseInfo);
 
       await writeFile(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_DATA_WAREHOUSE}`, JSON.stringify(dataWarehouse));
       await writeFile(`${FOLDER_FILE_DATA}/${FOLDER_DEBUG}/${FILE_URL_WAREHOUSE}`, JSON.stringify(dataUrlWareHouses));
